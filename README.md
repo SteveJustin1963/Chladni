@@ -1,4 +1,8 @@
 # Chladni
 
-see https://github.com/SteveJustin1963/Fractansistor
 
+
+### REF 
+- https://github.com/SteveJustin1963/Fractansistor
+- https://paulbourke.net/geometry/chladni/
+- 
