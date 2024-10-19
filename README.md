@@ -1,218 +1,200 @@
-# Chladni
+# Ernst Chladni, Chladni figures, and the "Fractansistor" project.
 
-### **Pseudocode**
+1. **Fractansistor Project (GitHub)**:
+   - The project by SteveJustin1963 explores the intersection of fractals and electronics, specifically focusing on recreating Chladni figures using electronic components and software. It may involve simulations or hardware to visualize these patterns dynamically.
+   
+2. **Paul Bourke’s Geometry (Chladni Figures)**:
+   - Paul Bourke’s page provides an in-depth look at Chladni figures, which are patterns formed by vibrating surfaces covered with particles. It includes the mathematical and physical principles behind how these patterns emerge based on the frequency and mode of vibration.
 
-#### **1. PI Approximation**
+3. **Journal of Mathematics and Science: Collaborative Explorations**:
+   - The paper discusses Chladni figures from a scientific and mathematical perspective, providing insights into their formation, significance, and applications in understanding wave behavior and resonance. It may also explore educational approaches for teaching these concepts.
 
-- **Issue:** The value of `PI_16` is set to `20589`, which is supposed to be an approximation of π scaled to fit the 16-bit range (`PI * 2^13`).
-- **Correction:** Calculate the correct scaled value.
-  
-  \[
-  \text{PI\_16} = \pi \times 2^{13} \approx 3.1416 \times 8192 \approx 25736
-  \]
-  
-- **Action:** Update `PI_16` to `25736`.
+This sources suggests an exploration into Chladni patterns, their mathematical modeling, and their application in electronics through the Fractansistor project. 
 
-#### **2. Trigonometric Lookup Tables**
+### Punish the TEC-1 with mint code 
+warning - concept code
 
-- **Issue:** The scaling factor used in `populate_trig_tables` is `(2^15 - 1)`, which is `32767`. When multiplying multiple 16-bit integers, this can cause overflow.
-- **Correction:** Adjust the scaling to prevent overflow. Use a smaller scaling factor or adjust the arithmetic to accommodate the larger intermediate results.
-- **Action:** Use fixed-point arithmetic with proper scaling (Q15 format). When multiplying two Q15 numbers, the result is in Q30 format, so we need to shift right by 15 bits to keep it in Q15.
+#### **Purpose**
 
-#### **3. Grid Value Calculations**
+This MINT program generates and displays a 16x16 grid pattern by simulating wave interference using integer arithmetic and precomputed sine and cosine values.
 
-- **Issue:** Multiplying three 16-bit signed integers (`grid[x][y]`, `SIN_LOOKUP[angle_x]`, and `COS_LOOKUP[angle_y]`) can result in values exceeding 16 bits.
-- **Correction:** Break down the multiplication into steps and include right shifts to maintain values within 16 bits.
-- **Action:** Perform sequential multiplications with appropriate right shifts after each multiplication.
+#### **Variables Used (All Single Letters)**
 
-#### **4. Threshold Comparison**
+- `w`: Width of the grid.
+- `h`: Height of the grid.
+- `f`: Frequency of the wave patterns.
+- `a`: Amplitude of the waves.
+- `b`: Total grid size (`b = w * h`).
+- `g`: Pointer to the allocated grid array.
+- `s`: Sine lookup table (array of precomputed values).
+- `c`: Cosine lookup table (array of precomputed values).
+- `x`, `y`: Loop indices for grid coordinates.
+- `m`, `n`: Indices for accessing the sine and cosine lookup tables.
+- `p`, `q`: Sine and cosine values retrieved from the lookup tables.
+- `t`, `u`: Temporary variables for intermediate calculations.
+- `v`: Computed amplitude value at each grid point.
+- `i`: Linear index in the grid array corresponding to coordinates `(x, y)`.
 
-- **Issue:** The comparison `grid[x][y] < threshold_value` doesn't account for negative values that may result from the sine and cosine multiplications.
-- **Correction:** Use the absolute value of `grid[x][y]` when comparing to the threshold.
-- **Action:** Update the condition to `ABS(grid[x][y]) < threshold_value`.
+#### **Code Breakdown**
 
-#### **5. ASCII Bar Graph Scaling**
+1. **Initialization**
 
-- **Issue:** The `scale_factor` in `display_ascii_bar_graph` may not accurately represent the scaled values of `grid[x][y]`.
-- **Correction:** Adjust `scale_factor` based on the new scaling of sine and cosine values.
-- **Action:** Recalculate `scale_factor` and adjust the amplitude ranges in the ASCII representation accordingly.
+   ```mint
+   16 w !   // Set grid width to 16
+   16 h !   // Set grid height to 16
+   2 f !    // Set frequency to 2
+   16384 a ! // Set amplitude to 16384 (mid-range for 16-bit signed integer)
+   ```
 
----
+   - Sets up the parameters for the grid size and wave properties.
 
-### **  Pseudocode**
+2. **Memory Allocation**
 
-```plaintext
-// Define grid with 16-bit signed integers
-DEFINE grid[WIDTH][HEIGHT] AS matrix to hold vibration amplitudes (16-bit signed)
+   ```mint
+   w h * b ! // Calculate total grid size b = w * h
+   b /A g !  // Allocate memory for the grid array of size b
+   ```
 
-// Initialize parameters for vibration
-SET frequency = initial_frequency (16-bit signed)
-SET amplitude = initial_amplitude (16-bit signed)
-SET fractal_pattern AS predefined 16-bit signed fractal array (e.g., scaled Mandelbrot set)
+   - Calculates the total number of grid points and allocates memory for the grid array `g`.
 
-// Define constants for integer-based trigonometric calculations
-SET PI_16 = 25736 // Approximation of PI scaled to fit Q13 format (PI * 2^13)
+3. **Lookup Tables**
 
-// Initialize sine and cosine lookup tables
-DEFINE SIN_LOOKUP[0..359] AS array of 16-bit signed integers
-DEFINE COS_LOOKUP[0..359] AS array of 16-bit signed integers
-CALL populate_trig_tables(SIN_LOOKUP, COS_LOOKUP) // Populate with scaled values
+   ```mint
+   [0 12539 23170 30273 32767 30273 23170 12539 0 -12539 -23170 -30273 -32767 -30273 -23170 -12539] s !
+   [32767 30273 23170 12539 0 -12539 -23170 -30273 -32767 -30273 -23170 -12539 0 12539 23170 30273] c !
+   ```
 
-// Loop through each grid cell to apply fractal properties
-FOR x FROM 0 TO WIDTH - 1
-    FOR y FROM 0 TO HEIGHT - 1
-        // Apply fractal function to generate base vibration pattern (returns 16-bit signed value)
-        grid[x][y] = FRACTAL_FUNCTION(x, y, fractal_pattern)
+   - Initializes the sine (`s`) and cosine (`c`) lookup tables with precomputed values scaled for 16-bit integer arithmetic.
+   - These tables represent sine and cosine values at specific angles, avoiding the need for trigonometric calculations during runtime.
 
-        // Modify grid values based on scaled Chladni equations using lookup tables
-        SET angle_x = (frequency * x) % 360 // Ensure angle stays within 0-359 degrees
-        SET angle_y = (frequency * y) % 360
+4. **Computing Grid Values**
 
-        // Perform fixed-point multiplication with proper scaling
-        temp = (grid[x][y] * SIN_LOOKUP[angle_x]) >> 15 // Q15 * Q15 -> Q30, shift to Q15
-        grid[x][y] = (temp * COS_LOOKUP[angle_y]) >> 15 // Q15 * Q15 -> Q30, shift to Q15
-    END FOR
-END FOR
+   ```mint
+   0 y !   // Initialize y to 0
+   h (
+     0 x !  // Initialize x to 0
+     w (
+       x f * 16 % m !   // m = (x * f) % 16
+       y f * 16 % n !   // n = (y * f) % 16
+       s m ? p !        // Retrieve sine value p from s at index m
+       c n ? q !        // Retrieve cosine value q from c at index n
+       a p * t !        // t = a * p
+       t q * u !        // u = t * q
+       u 1073741824 / v ! // Scale down u by dividing by 2^30 to keep within 16-bit range
+       y w * x + i !    // Compute linear index i = x + y * w
+       v g i ?!         // Store computed value v into grid array at index i
+       1 x + x !        // Increment x
+     )
+     1 y + y !          // Increment y
+   )
+   ```
 
-// Display Chladni patterns using ASCII bar graph
-CALL display_ascii_bar_graph(grid)
+   - **Loops**: Nested loops iterate over each coordinate `(x, y)` in the grid.
+   - **Index Calculations**:
+     - `m` and `n` are indices for the lookup tables, ensuring they stay within the table size (0-15) using modulo 16.
+   - **Value Retrieval**:
+     - Retrieves sine and cosine values `p` and `q` from the lookup tables using indices `m` and `n`.
+   - **Amplitude Calculation**:
+     - Computes the product of amplitude `a`, sine value `p`, and cosine value `q`.
+     - Scales down the result `u` to fit within 16-bit signed integer limits by dividing by `2^30` (since we multiplied three 16-bit numbers).
+   - **Storing Values**:
+     - Calculates the linear index `i` for the 1D grid array.
+     - Stores the computed value `v` into the grid array `g` at index `i`.
 
-// Analyze Chladni nodes to determine transistor behavior
-DEFINE nodes AS LIST of (x, y) coordinates
-FOR x FROM 0 TO WIDTH - 1
-    FOR y FROM 0 TO HEIGHT - 1
-        IF ABS(grid[x][y]) < threshold_value THEN
-            ADD (x, y) TO nodes
-        END IF
-    END FOR
-END FOR
+5. **Displaying the Grid**
 
-// Process nodes to simulate how transistor properties are affected
-FOR EACH node IN nodes
-    // Calculate conductivity or other properties using integer math
-    transistor_property = CALCULATE_PROPERTY(node, fractal_pattern) // Returns 16-bit signed value
-    OUTPUT transistor_property
-END FOR
+   ```mint
+   0 y !   // Reset y to 0
+   h (
+     0 x !  // Reset x to 0
+     w (
+       y w * x + i !    // Compute linear index i = x + y * w
+       g i ? v !        // Retrieve value v from grid array at index i
+       v 1000 < ( ` ` ) /E (    // If v < 1000, print a space
+         v 20000 > ( `#` ) /E ( `.` )  // If v > 20000, print '#', else print '.'
+       )
+       1 x + x !        // Increment x
+     )
+     /N                 // Newline after each row
+     1 y + y !          // Increment y
+   )
+   ```
 
-// Adjust frequency and amplitude to explore different modes
-WHILE frequency < max_frequency (16-bit signed)
-    INCREMENT frequency by small value
-    // Optionally adjust amplitude
-    REPEAT entire process
-END WHILE
+   - **Loops**: Nested loops iterate over each coordinate `(x, y)` to display the grid.
+   - **Value Retrieval**:
+     - Retrieves the computed value `v` from the grid array `g`.
+   - **Character Mapping**:
+     - **Condition 1**: If `v < 1000`, prints a space `' '`.
+     - **Condition 2**: Else if `v > 20000`, prints a hash `'#'`.
+     - **Else**: Prints a dot `'.'`.
+   - **Output**:
+     - Characters are printed sequentially to form the grid pattern.
+     - A newline character is printed after each row to format the grid properly.
 
-END
+#### **What the Code Is Trying to Do**
 
-// Function to populate sine and cosine lookup tables
-FUNCTION populate_trig_tables(SIN_LOOKUP, COS_LOOKUP):
-    FOR angle FROM 0 TO 359
-        // Scale sine and cosine values to fit Q15 format (-32768 to +32767)
-        SIN_LOOKUP[angle] = SIN(angle * PI / 180) * 32768 // Scale sine value
-        COS_LOOKUP[angle] = COS(angle * PI / 180) * 32768 // Scale cosine value
-    END FOR
-END FUNCTION
+- **Simulate Wave Patterns**: The program simulates wave interference patterns on a 2D grid using integer arithmetic.
+- **Generate Visual Representation**: By mapping computed amplitude values to ASCII characters, it creates a visual representation of the wave patterns.
+- **Use of Lookup Tables**: Precomputed sine and cosine values enable the program to perform trigonometric calculations without floating-point arithmetic, which MINT lacks.
+- **Integer Arithmetic**: All calculations are performed using 16-bit signed integers to adhere to MINT's limitations.
+- **Display Patterns**: The final output is a grid displaying spaces, dots, and hashes to represent different amplitude levels, effectively visualizing the wave interference.
 
-// Function to display the grid as an ASCII bar graph
-FUNCTION display_ascii_bar_graph(grid):
-    DEFINE scale_factor = 32768 / 5 // Divide range into 5 levels for ASCII representation
-    FOR y FROM 0 TO HEIGHT - 1
-        FOR x FROM 0 TO WIDTH - 1
-            // Determine ASCII character based on grid value scaled to 5 levels
-            SET value = grid[x][y]
-            IF value < -scale_factor * 2 THEN
-                PRINT " " // Very low amplitude (space)
-            ELSE IF value >= -scale_factor * 2 AND value < -scale_factor THEN
-                PRINT "-" // Low amplitude
-            ELSE IF value >= -scale_factor AND value < 0 THEN
-                PRINT "=" // Medium-low amplitude
-            ELSE IF value >= 0 AND value < scale_factor THEN
-                PRINT "#" // Medium-high amplitude
-            ELSE IF value >= scale_factor THEN
-                PRINT "@" // High amplitude
-            END IF
-        END FOR
-        PRINT NEW_LINE // Move to next row in the graph
-    END FOR
-END FUNCTION
-```
+#### **Notes**
 
----
+- **Scaling Calculations**: Multiplying three 16-bit integers can result in values exceeding 16 bits. The division by `2^30` scales the result back into the 16-bit range.
+- **Memory Management**: The grid size is limited to 16x16 to fit within MINT's 2KB memory constraint.
+- **Variable Naming**: All variables are single lowercase letters (`a` to `z`), following MINT's variable naming rules.
 
- 
+### **How to Run the Code**
 
-#### **1. Corrected PI Approximation**
+1. **Enter the Code into MINT**: Input the code exactly as shown into your MINT interpreter.
 
-- **Updated Value:** `PI_16` is now set to `25736`, accurately representing π scaled to `2^13`.
+2. **Execute the Function**: At the MINT prompt, type:
 
-#### **2. Fixed-Point Arithmetic in Trigonometric Tables**
+   ```mint
+   > P
+   ```
 
-- **Scaling Factor:** Changed to `32768` to use Q15 fixed-point format, allowing sine and cosine values to range from `-32768` to `+32767`.
-- **Benefit:** Prevents overflow when performing multiplications, as shifting right by 15 bits keeps the result within 16 bits.
+3. **View the Output**: The program will display a pattern composed of spaces `' '`, dots `'.'`, and hashes `'#'`.
 
-#### **3. Adjusted Grid Calculations**
+### **Understanding the Output**
 
-- **Sequential Multiplication and Shifting:**
-  - First Multiplication:
-    \[
-    \text{temp} = \frac{\text{grid}[x][y] \times \text{SIN\_LOOKUP}[angle\_x]}{2^{15}}
-    \]
-  - Second Multiplication:
-    \[
-    \text{grid}[x][y] = \frac{\text{temp} \times \text{COS\_LOOKUP}[angle\_y]}{2^{15}}
-    \]
-- **Explanation:** By shifting right by 15 bits after each multiplication, we keep the values within the 16-bit signed integer range.
+- The pattern represents simulated wave interference on a grid.
+- **Spaces** represent low amplitude areas.
+- **Dots** represent medium amplitude areas.
+- **Hashes** represent high amplitude areas.
+- The visual pattern helps in understanding how the sine and cosine values interact across the grid.
 
-#### **4. Absolute Value in Threshold Comparison**
+### **Potential Modifications**
 
-- **Update:** Used `ABS(grid[x][y])` to ensure that both positive and negative amplitudes are considered when detecting nodes.
-- **Reasoning:** Since sine and cosine functions can produce negative values, taking the absolute value allows for consistent node detection.
+- **Adjust Frequency (`f`)**: Changing the frequency value will alter the wave patterns.
 
-#### **5. Adjusted ASCII Bar Graph Scaling**
+  ```mint
+  3 f !   // Set frequency to 3
+  ```
 
-- **Scaling Factor:** Recalculated `scale_factor` as `32768 / 5` to match the new range of `grid[x][y]`.
-- **Amplitude Ranges:**
-  - Very Low Amplitude: `value < -scale_factor * 2`
-  - Low Amplitude: `-scale_factor * 2 ≤ value < -scale_factor`
-  - Medium-Low Amplitude: `-scale_factor ≤ value < 0`
-  - Medium-High Amplitude: `0 ≤ value < scale_factor`
-  - High Amplitude: `value ≥ scale_factor`
-- **Benefit:** Provides a more accurate visual representation of the amplitude variations in the grid.
+- **Adjust Amplitude (`a`)**: Modifying the amplitude affects the intensity of the patterns.
 
----
+  ```mint
+  20000 a !  // Set amplitude to 20000
+  ```
 
-### **Additional Notes**
+- **Change Grid Size**: If memory allows, you can try smaller or slightly larger grid sizes.
 
-- **Data Types and Overflow Prevention:**
-  - **Intermediate Variables:** Use 32-bit integers for intermediate calculations to prevent overflow before shifting.
-  - **Consistency:** Ensure that all variables used in calculations are of the appropriate data type.
+  ```mint
+  8 w !   // Set width to 8
+  8 h !   // Set height to 8
+  ```
 
-- **Frequency and Angle Calculations:**
-  - **Overflow Check:** When calculating `angle_x` and `angle_y`, ensure that `frequency * x` and `frequency * y` do not exceed 32-bit integer limits.
-  - **Modulo Operation:** Using `% 360` keeps angles within the valid range for the lookup tables.
+- **Modify Character Mapping**: Adjust the threshold values and characters to change how the amplitude values are visualized.
 
-- **Function Definitions:**
-  - **FRACTAL_FUNCTION:** Should return a 16-bit signed integer based on the fractal pattern.
-  - **CALCULATE_PROPERTY:** Must be defined to simulate how the nodes affect transistor properties.
+### **Conclusion**
 
-- **Loop Structure:**
-  - **Frequency Adjustment Loop:** Added a comment to optionally adjust amplitude alongside frequency in the exploration loop.
-  - **Process Repetition:** Clearly indicated that the entire process is repeated when frequency is incremented.
-
----
-
+This MINT program demonstrates how to generate and display wave patterns using integer arithmetic and precomputed trigonometric values within the constraints of the MINT Programming Language. By understanding each line and variable, you can modify and extend the code to explore different patterns and behaviors.
 
  
-
-### **Next Steps**
-
-- **Implementation:** Translate the pseudocode into the target programming language, ensuring that all data types and operations are correctly defined.
-- **Testing:** Validate the code with known inputs and compare the output to expected results to ensure correctness.
-- **Optimization:** If necessary, optimize the code for performance or memory usage, especially if running on hardware with strict limitations.
-- **Visualization:** Enhance the `display_ascii_bar_graph` function or implement additional visualization methods for better representation of the patterns.
-
-Feel free to ask if you need further assistance with any part of this process!
-
-
+ 
+  
 
 ### REF 
 - https://github.com/SteveJustin1963/Fractansistor
