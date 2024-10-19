@@ -1,0 +1,95 @@
+:P
+16 w !
+16 h !
+2 f !
+16384 a !
+w h * b !
+b /A g !
+[0 12539 23170 30273 32767 30273 23170 12539 0 -12539 -23170 -30273 -32767 -30273 -23170 -12539] s !
+[32767 30273 23170 12539 0 -12539 -23170 -30273 -32767 -30273 -23170 -12539 0 12539 23170 30273] c !
+0 y !
+h (
+  0 x !
+  w (
+    x f * 16 % m !
+    y f * 16 % n !
+    s m ? p !
+    c n ? q !
+    a p * t !
+    t q * u !
+    u 1073741824 / v !
+    y w * x + i !
+    v g i ?!
+    1 x + x !
+  )
+  1 y + y !
+)
+0 y !
+h (
+  0 x !
+  w (
+    y w * x + i !
+    g i ? v !
+    v 1000 < ( ` ` ) /E (
+      v 20000 > ( `#` ) /E ( `.` )
+    )
+    1 x + x !
+  )
+  /N
+  1 y + y !
+)
+;
+
+P
+
+
+///////////////
+
+:P
+16 w !   // Set grid width w to 16
+16 h !   // Set grid height h to 16
+2 f !    // Set frequency f to 2
+16384 a ! // Set amplitude a to 16384 (mid-range value for 16-bit signed integer)
+
+w h * b ! // Calculate total grid size b = w * h
+b /A g !  // Allocate memory for the grid array of size b, store pointer in g
+
+// Initialize sine (s) and cosine (c) lookup tables with precomputed values
+[0 12539 23170 30273 32767 30273 23170 12539 0 -12539 -23170 -30273 -32767 -30273 -23170 -12539] s !
+[32767 30273 23170 12539 0 -12539 -23170 -30273 -32767 -30273 -23170 -12539 0 12539 23170 30273] c !
+
+0 y !   // Initialize y to 0 for the outer loop over rows
+h (     // Loop over height h times
+ 0 x !  // Initialize x to 0 for the inner loop over columns
+ w (    // Loop over width w times
+   x f * 16 % m !   // Calculate m = (x * f) % 16, index for sine lookup table
+   y f * 16 % n !   // Calculate n = (y * f) % 16, index for cosine lookup table
+   s m ? p !        // Retrieve sine value p from s at index m
+   c n ? q !        // Retrieve cosine value q from c at index n
+   a p * t !        // Multiply amplitude a by sine value p, store in t
+   t q * u !        // Multiply t by cosine value q, store in u
+   u 1073741824 / v ! // Divide u by 2^30 (1073741824) to scale down, store in v
+   y w * x + i !    // Calculate index i = x + y * w in the grid array
+   v g i ?!         // Store computed value v into grid array g at index i
+   1 x + x !        // Increment x by 1
+ )
+ 1 y + y !          // Increment y by 1
+)
+0 y !   // Reset y to 0 for the display loop
+h (     // Loop over height h times
+ 0 x !  // Initialize x to 0 for the inner loop over columns
+ w (    // Loop over width w times
+   y w * x + i !    // Calculate index i = x + y * w in the grid array
+   g i ? v !        // Retrieve value v from grid array g at index i
+   // Map value v to ASCII character for display
+   v 1000 < ( ` ` ) /E (    // If v < 1000, print space ' '
+     v 20000 > ( `#` ) /E ( `.` )  // Else if v > 20000, print '#', else print '.'
+   )
+   1 x + x !        // Increment x by 1
+ )
+ /N                 // Print newline after each row
+ 1 y + y !          // Increment y by 1
+)
+;
+
+//////////////
