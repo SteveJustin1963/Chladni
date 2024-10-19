@@ -11,8 +11,11 @@
 
 This sources suggests an exploration into Chladni patterns, their mathematical modeling, and their application in electronics through the Fractansistor project. 
 
-### Punish the TEC-1 with mint code 
-warning - concept code
+### TEC-1 mint code 
+- warning - concept code
+- add more ram, will not fit in 2k system
+- expect it to fail epically then puch yourself in the nuts
+
 
 #### **Purpose**
 
