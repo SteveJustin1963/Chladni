@@ -39,7 +39,7 @@
 
 ---
 
-### **Revised Pseudocode**
+### **  Pseudocode**
 
 ```plaintext
 // Define grid with 16-bit signed integers
@@ -138,7 +138,7 @@ END FUNCTION
 
 ---
 
-### **Explanation of Corrections**
+ 
 
 #### **1. Corrected PI Approximation**
 
