@@ -1,4 +1,4 @@
-# Ernst Chladni, Chladni figures, and the "Fractansistor" project.
+# Ernst Chladni, Chladni figures, and a possible "Fractal-transistor"
 - explore the intersection of fractals and electronics, specifically focusing on recreating Chladni figures using electronic components and software. we can try simulations and hardware to visualize these patterns dynamically.
 - Paul Bourke’s Geometry (Chladni Figures) looks at Chladni figures,
 - which are patterns formed by vibrating surfaces covered with particles.
