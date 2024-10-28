@@ -1,3 +1,7 @@
+![image](https://github.com/user-attachments/assets/fb37da0a-0f84-453c-8911-cceab1dd45ba)
+
+
+
 # Ernst Chladni, Chladni figures 
 - explore the intersection of fractals and electronics, specifically focusing on recreating Chladni figures using electronic components and software. we can try simulations and hardware to visualize these patterns dynamically.
 - Paul Bourke’s Geometry (Chladni Figures) looks at Chladni figures,
@@ -186,10 +190,31 @@ This MINT program generates and displays a 16x16 grid pattern by simulating wave
 
 - **Modify Character Mapping**: Adjust the threshold values and characters to change how the amplitude values are visualized.
 
-### **Conclusion**
 
-This MINT program demonstrates how to generate and display wave patterns using integer arithmetic and precomputed trigonometric values within the constraints of the MINT Programming Language. By understanding each line and variable, you can modify and extend the code to explore different patterns and behaviors.
-
+![image](https://github.com/user-attachments/assets/44bd2c3b-5207-4799-a127-fd6282b4969a)
+![image](https://github.com/user-attachments/assets/906db91d-2725-40ac-b559-0ad3eeeda3d7)
+![image](https://github.com/user-attachments/assets/394e6e4e-d6fd-4a14-bd17-470183c4198d)
+![image](https://github.com/user-attachments/assets/5fcf8455-f5a0-4e4b-a2db-82a712e3b3ee)
+![image](https://github.com/user-attachments/assets/83ba2f1f-b638-4b94-a70e-2de6769a934e)
+![image](https://github.com/user-attachments/assets/efad80a6-5290-40af-b9ad-64bf1a9e8dc6)
+![image](https://github.com/user-attachments/assets/5e4fa47c-5597-4378-bea0-1bbac5bdc7e5)
+![image](https://github.com/user-attachments/assets/853e85ce-335e-4d16-b78c-992679c5ed02)
+![image](https://github.com/user-attachments/assets/d30f1ed8-dcb1-476f-a2c7-6fe96b6fb4cd)
+![image](https://github.com/user-attachments/assets/e0852b92-e37e-4f23-9211-81ef686bae12)
+![image](https://github.com/user-attachments/assets/0ed0f23f-8d58-4d70-b04d-35136148d298)
+![image](https://github.com/user-attachments/assets/3ba1c91e-f9a7-470a-8b61-63a2772de421)
+![image](https://github.com/user-attachments/assets/50a8357a-0246-441d-b70a-2a40404b4285)
+![image](https://github.com/user-attachments/assets/9ceaa7d7-fd89-471b-827e-9f852b77bfb1)
+![image](https://github.com/user-attachments/assets/1815f021-dd49-40c5-9174-130168857f29)
+![image](https://github.com/user-attachments/assets/5e1b2392-2735-436c-976b-c0f5a7223643)
+![image](https://github.com/user-attachments/assets/30167054-51b2-4411-990e-d5ddafa46bfb)
+![image](https://github.com/user-attachments/assets/d2523ef7-19e7-438c-a344-5429b0e91529)
+![image](https://github.com/user-attachments/assets/8f730510-49e2-42b0-a78c-6824f0bb91d8)
+![image](https://github.com/user-attachments/assets/42d5e7c2-44bd-43f8-98b4-b34ef8056b20)
+![image](https://github.com/user-attachments/assets/6115d31f-19a1-4093-84e0-57b901c5dc2a)
+![image](https://github.com/user-attachments/assets/50de781b-1541-432c-81d5-402b262a9f31)
+![image](https://github.com/user-attachments/assets/b37101c6-ba3d-4acd-b9e3-425eb5d4a04c)
+![image](https://github.com/user-attachments/assets/366288e7-3f82-4f76-9110-c40c963596ba)
  
  
   
