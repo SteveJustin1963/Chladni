@@ -1,20 +1,15 @@
 # Ernst Chladni, Chladni figures, and the "Fractansistor" project.
-
-1. **Fractansistor Project (GitHub)**:
-   - The project by SteveJustin1963 explores the intersection of fractals and electronics, specifically focusing on recreating Chladni figures using electronic components and software. It may involve simulations or hardware to visualize these patterns dynamically.
-   
-2. **Paul Bourke’s Geometry (Chladni Figures)**:
-   - Paul Bourke’s page provides an in-depth look at Chladni figures, which are patterns formed by vibrating surfaces covered with particles. It includes the mathematical and physical principles behind how these patterns emerge based on the frequency and mode of vibration.
-
-3. **Journal of Mathematics and Science: Collaborative Explorations**:
-   - The paper discusses Chladni figures from a scientific and mathematical perspective, providing insights into their formation, significance, and applications in understanding wave behavior and resonance. It may also explore educational approaches for teaching these concepts.
-
-This sources suggests an exploration into Chladni patterns, their mathematical modeling, and their application in electronics through the Fractansistor project. 
+- explore the intersection of fractals and electronics, specifically focusing on recreating Chladni figures using electronic components and software. we can try simulations and hardware to visualize these patterns dynamically.
+- Paul Bourke’s Geometry (Chladni Figures) looks at Chladni figures,
+- which are patterns formed by vibrating surfaces covered with particles.
+- It includes the mathematical and physical principles behind how these patterns emerge based on the frequency and mode of vibration.
+- we can explore Chladni patterns, their mathematical modeling, and their application in electronics through the Fractansistor project. 
 
 ### TEC-1 mint code 
 - warning - concept code
-- add more ram, will not fit in 2k system
-- expect it to fail epically then puch yourself in the nuts
+- need to add more ram, will not fit in 2k
+- when the code fails then push yourself in the nuts
+  
 
 
 #### **Purpose**
